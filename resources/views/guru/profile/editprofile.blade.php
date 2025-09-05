@@ -44,7 +44,12 @@
 
             <div>
                 <label class="block font-semibold">Tahun Masuk</label>
-                <input type="text" class="w-full border px-3 py-2 rounded bg-gray-100" value="{{ $pegawai->tahun_masuk ?? '-' }}" >
+            <input 
+                type="number" 
+                name="tahun_masuk" 
+                class="w-full border px-3 py-2 rounded bg-gray-100" 
+                value="{{ old('tahun_masuk', $pegawai->tahun_masuk) }}" 
+            >
             </div>
 
             <div>

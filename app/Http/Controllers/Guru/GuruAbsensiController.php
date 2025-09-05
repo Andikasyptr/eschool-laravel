@@ -37,22 +37,26 @@ class GuruAbsensiController extends Controller
             $imageData = base64_decode(preg_replace('#^data:image/\w+;base64,#i', '', $request->foto));
             $filename = uniqid() . '_masuk.jpg';
 
-            // Gunakan disk('public') agar masuk ke storage/app/public/absen
             Storage::disk('public')->put('absen/' . $filename, $imageData);
             $fotoPath = 'storage/absen/' . $filename;
         }
 
+        // Tentukan status masuk berdasarkan jam 07:00
+        $jamSekarang = now()->format('H:i:s');
+        $batasWaktu = '07:00:00';
+        $statusMasuk = ($jamSekarang <= $batasWaktu) ? 'Tepat Waktu' : 'Terlambat';
+
         Absensi::create([
             'user_id'       => $user->id,
             'tanggal'       => $today,
-            'jam_masuk'     => now()->toTimeString(),
-            'status_masuk'  => 'Hadir',
+            'jam_masuk'     => $jamSekarang,
+            'status_masuk'  => $statusMasuk,
             'lokasi_masuk'  => $request->lokasi ?? null,
             'foto_masuk'    => $fotoPath,
             'dibuat_oleh'   => $user->id,
         ]);
 
-        return back()->with('success', 'Berhasil absen masuk.');
+        return back()->with('success', 'Berhasil absen masuk dengan status: ' . $statusMasuk);
     }
 
     public function absenPulang(Request $request)
@@ -74,18 +78,22 @@ class GuruAbsensiController extends Controller
             $imageData = base64_decode(preg_replace('#^data:image/\w+;base64,#i', '', $request->foto));
             $filename = uniqid() . '_pulang.jpg';
 
-            // Gunakan disk('public') agar masuk ke storage/app/public/absen
             Storage::disk('public')->put('absen/' . $filename, $imageData);
             $fotoPath = 'storage/absen/' . $filename;
         }
 
+        // Tentukan status pulang berdasarkan jam 14:30
+        $jamSekarang = now()->format('H:i:s');
+        $batasPulang = '14:30:00';
+        $statusPulang = ($jamSekarang < $batasPulang) ? 'Pulang Cepat' : 'Tepat Waktu';
+
         $absensi->update([
-            'jam_pulang'    => now()->toTimeString(),
-            'status_pulang' => 'Hadir',
+            'jam_pulang'    => $jamSekarang,
+            'status_pulang' => $statusPulang,
             'lokasi_pulang' => $request->lokasi ?? null,
             'foto_pulang'   => $fotoPath,
         ]);
 
-        return back()->with('success', 'Berhasil absen pulang.');
+        return back()->with('success', 'Berhasil absen pulang dengan status: ' . $statusPulang);
     }
 }

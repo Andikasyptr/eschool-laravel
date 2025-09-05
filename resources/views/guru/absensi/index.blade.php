@@ -117,94 +117,122 @@
     </div>
 
     {{-- Riwayat Absensi --}}
-    <h2 class="text-xl font-semibold mt-6 mb-2">Riwayat Absensi</h2>
-    <div class="overflow-x-auto">
-        <table class="min-w-full table-auto border">
-            <thead>
-                <tr class="bg-gray-200 text-left">
-                     <th class="px-4 py-2">No</th>
-                    <th class="px-4 py-2">Nama</th>
-                    <th class="px-4 py-2">Tanggal</th>
-                    <th class="px-4 py-2">Masuk</th>
-                    <th class="px-4 py-2">Pulang</th>
-                    <th class="px-4 py-2">Status</th>
-                    <th class="px-4 py-2">Foto Masuk</th>
-                    <th class="px-4 py-2">Lokasi Masuk</th>
-                    <th class="px-4 py-2">Foto Pulang</th>
-                    <th class="px-4 py-2">Lokasi Pulang</th>
-                </tr>
-            </thead>
-            <tbody>
-               @forelse($riwayat as $index => $absen)
-                <tr class="border-t">
-                    <td class="px-4 py-2">{{ $index + 1 }}</td>
-                    <td class="px-4 py-2">{{ $absen->user->name ?? '-' }}</td>
-                    <td class="px-4 py-2">{{ $absen->tanggal }}</td>
-                    <td class="px-4 py-2">{{ $absen->jam_masuk ?? '-' }}</td>
-                    <td class="px-4 py-2">{{ $absen->jam_pulang ?? '-' }}</td>
-                    <td class="px-4 py-2">{{ $absen->status_masuk ?? '-' }}</td>
+<h2 class="text-xl font-semibold mt-6 mb-4 text-gray-800">Riwayat Absensi</h2>
 
+<div class="overflow-x-auto rounded-lg shadow-md">
+    <table class="min-w-full text-sm text-left border border-gray-200">
+        <thead class="bg-gradient-to-r from-blue-500 to-blue-600 text-white">
+            <tr>
+                <th class="px-4 py-3">No</th>
+                <th class="px-4 py-3">Nama</th>
+                <th class="px-4 py-3">Tanggal</th>
+                <th class="px-4 py-3">Masuk</th>
+                <th class="px-4 py-3">Foto Masuk</th>
+                <th class="px-4 py-3">Lokasi Masuk</th>
+                <th class="px-4 py-3">Status Masuk</th>
+                <th class="px-4 py-3">Pulang</th>
+                <th class="px-4 py-3">Foto Pulang</th>
+                <th class="px-4 py-3">Lokasi Pulang</th>
+                <th class="px-4 py-3">Status Pulang</th>
+            </tr>
+        </thead>
+        <tbody class="divide-y divide-gray-200 bg-white">
+            @forelse($riwayat as $index => $absen)
+                <tr class="hover:bg-gray-50 transition">
+                    <td class="px-4 py-3 font-medium text-gray-700">{{ $index + 1 }}</td>
+                    <td class="px-4 py-3">{{ $absen->user->name ?? '-' }}</td>
+                    <td class="px-4 py-3">{{ $absen->tanggal }}</td>
+                    <td class="px-4 py-3">{{ $absen->jam_masuk ?? '-' }}</td>
+                    
                     {{-- Foto Masuk --}}
-                    <td class="px-4 py-2">
+                    <td class="px-4 py-3">
                         @if ($absen->foto_masuk)
-                        <a href="{{ asset($absen->foto_masuk) }}" target="_blank" class="text-blue-600 underline text-sm">
-                            Lihat Foto
-                        </a>
+                            <a href="{{ asset($absen->foto_masuk) }}" target="_blank"
+                               class="text-blue-600 hover:text-blue-800 underline">
+                                Lihat Foto
+                            </a>
                         @else
-                        <span class="text-sm text-gray-500">-</span>
+                            <span class="text-gray-400">-</span>
                         @endif
                     </td>
-
+                    
                     {{-- Lokasi Masuk --}}
-                    <td class="px-4 py-2">
+                    <td class="px-4 py-3">
                         @if ($absen->lokasi_masuk)
-                        @php
-                            $lokasi = explode(',', $absen->lokasi_masuk);
-                            $lat = trim($lokasi[0] ?? '');
-                            $lng = trim($lokasi[1] ?? '');
-                        @endphp
-                        <a href="https://maps.google.com/?q={{ $lat }},{{ $lng }}" target="_blank" class="text-blue-600 underline text-sm">
-                            Lihat Lokasi
-                        </a>
+                            @php
+                                $lokasi = explode(',', $absen->lokasi_masuk);
+                                $lat = trim($lokasi[0] ?? '');
+                                $lng = trim($lokasi[1] ?? '');
+                            @endphp
+                            <a href="https://maps.google.com/?q={{ $lat }},{{ $lng }}" target="_blank"
+                               class="text-blue-600 hover:text-blue-800 underline">
+                                Lihat Lokasi
+                            </a>
                         @else
-                        <span class="text-sm text-gray-500">-</span>
+                            <span class="text-gray-400">-</span>
                         @endif
                     </td>
 
+                    <td class="px-4 py-3">
+                        <span class="px-2 py-1 rounded text-xs font-semibold
+                            @if($absen->status_masuk === 'Tepat Waktu') bg-green-100 text-green-700
+                            @elseif($absen->status_masuk === 'Terlambat') bg-red-100 text-red-700
+                            @else bg-gray-100 text-gray-700 @endif">
+                            {{ $absen->status_masuk ?? '-' }}
+                        </span>
+                    </td>
+
+                    <td class="px-4 py-3">{{ $absen->jam_pulang ?? '-' }}</td>
+                    
                     {{-- Foto Pulang --}}
-                    <td class="px-4 py-2">
+                    <td class="px-4 py-3">
                         @if ($absen->foto_pulang)
-                        <a href="{{ asset($absen->foto_pulang) }}" target="_blank" class="text-blue-600 underline text-sm">
-                            Lihat Foto
-                        </a>
+                            <a href="{{ asset($absen->foto_pulang) }}" target="_blank"
+                               class="text-blue-600 hover:text-blue-800 underline">
+                                Lihat Foto
+                            </a>
                         @else
-                        <span class="text-sm text-gray-500">-</span>
+                            <span class="text-gray-400">-</span>
+                        @endif
+                    </td>
+                    
+                    {{-- Lokasi Pulang --}}
+                    <td class="px-4 py-3">
+                        @if ($absen->lokasi_pulang)
+                            @php
+                                $lokasi = explode(',', $absen->lokasi_pulang);
+                                $lat = trim($lokasi[0] ?? '');
+                                $lng = trim($lokasi[1] ?? '');
+                            @endphp
+                            <a href="https://maps.google.com/?q={{ $lat }},{{ $lng }}" target="_blank"
+                               class="text-blue-600 hover:text-blue-800 underline">
+                                Lihat Lokasi
+                            </a>
+                        @else
+                            <span class="text-gray-400">-</span>
                         @endif
                     </td>
 
-                    {{-- Lokasi Pulang --}}
-                    <td class="px-4 py-2">
-                        @if ($absen->lokasi_pulang)
-                        @php
-                            $lokasi = explode(',', $absen->lokasi_pulang);
-                            $lat = trim($lokasi[0] ?? '');
-                            $lng = trim($lokasi[1] ?? '');
-                        @endphp
-                        <a href="https://maps.google.com/?q={{ $lat }},{{ $lng }}" target="_blank" class="text-blue-600 underline text-sm">
-                            Lihat Lokasi
-                        </a>
-                        @else
-                        <span class="text-sm text-gray-500">-</span>
-                        @endif
+                    <td class="px-4 py-3">
+                        <span class="px-2 py-1 rounded text-xs font-semibold
+                            @if($absen->status_pulang === 'Tepat Waktu') bg-green-100 text-green-700
+                            @elseif($absen->status_pulang === 'Pulang Cepat') bg-yellow-100 text-yellow-700
+                            @else bg-gray-100 text-gray-700 @endif">
+                            {{ $absen->status_pulang ?? '-' }}
+                        </span>
                     </td>
                 </tr>
-                @empty
-                <tr><td colspan="8" class="text-center py-2">Belum ada data absensi.</td></tr>
-                @endforelse
-            </tbody>
-        </table>
-    </div>
+            @empty
+                <tr>
+                    <td colspan="11" class="text-center px-4 py-6 text-gray-500">
+                        Belum ada data absensi.
+                    </td>
+                </tr>
+            @endforelse
+        </tbody>
+    </table>
 </div>
+
 @endsection
 
 @section('scripts')
@@ -215,7 +243,7 @@
 // === SETTING KOORDINAT DAN RADIUS SEKOLAH ===
 const lokasiSekolah = { lat: -6.262659, lng: 107.177224 };
 // const lokasiSekolah = { lat: -6.2511066, lng: 107.1737123 };
-const radiusMeter = 12; // 50 meter
+const radiusMeter = 10000; // 50 meter
 
 let currentForm = null;
 let currentStream = null;
@@ -414,5 +442,6 @@ function togglePanduanModal() {
         }
     });
 </script>
+
 @endpush
 
