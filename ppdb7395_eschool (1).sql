@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Sep 05, 2025 at 07:32 PM
+-- Generation Time: Sep 05, 2025 at 08:39 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -1328,9 +1328,9 @@ CREATE TABLE `sessions` (
 --
 
 INSERT INTO `sessions` (`id`, `user_id`, `ip_address`, `user_agent`, `payload`, `last_activity`) VALUES
-('33mhTGXgq0y8LDr6sgV5DJdPWoz8nhAyABZcaXAw', 26, '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/139.0.0.0 Safari/537.36', 'YTo0OntzOjY6Il90b2tlbiI7czo0MDoiSkRCbFpuekFENE96SVh3TVV1cEtseUxVZFBkRDE3bkpTS0UzUUxDSyI7czo2OiJfZmxhc2giO2E6Mjp7czozOiJuZXciO2E6MDp7fXM6Mzoib2xkIjthOjA6e319czo5OiJfcHJldmlvdXMiO2E6MTp7czozOiJ1cmwiO3M6MjY6Imh0dHA6Ly8xMjcuMC4wLjE6ODAwMC9ndXJ1Ijt9czo1MDoibG9naW5fd2ViXzU5YmEzNmFkZGMyYjJmOTQwMTU4MGYwMTRjN2Y1OGVhNGUzMDk4OWQiO2k6MjY7fQ==', 1757093474),
 ('LFvXtsFtIaDteSZ51Hke1BQnx3W1ZC5dQzPVhvtD', 141, '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/139.0.0.0 Safari/537.36', 'YTo0OntzOjY6Il90b2tlbiI7czo0MDoicXJxVE9rcm1ITkQ3ckFkSWc1cmk5YmZPVkVPd3owUzJ5TmMwNTRqdSI7czo2OiJfZmxhc2giO2E6Mjp7czozOiJuZXciO2E6MDp7fXM6Mzoib2xkIjthOjA6e319czo5OiJfcHJldmlvdXMiO2E6MTp7czozOiJ1cmwiO3M6Mzc6Imh0dHA6Ly8xMjcuMC4wLjE6ODAwMC9zaXN3YS9kYXNoYm9hcmQiO31zOjUwOiJsb2dpbl93ZWJfNTliYTM2YWRkYzJiMmY5NDAxNTgwZjAxNGM3ZjU4ZWE0ZTMwOTg5ZCI7aToxNDE7fQ==', 1757079148),
-('T7g5kSxVvlHRaWRShIbuVPqmRbJ46R1YDWAmVfM3', NULL, '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/139.0.0.0 Safari/537.36', 'YTozOntzOjY6Il90b2tlbiI7czo0MDoiTWs0d2FvU2RCQ2pvYVUwTkswOE1zSEVkczJRZVpYcHFVZ3lETjRpRSI7czo2OiJfZmxhc2giO2E6Mjp7czozOiJuZXciO2E6MDp7fXM6Mzoib2xkIjthOjA6e319czo5OiJfcHJldmlvdXMiO2E6MTp7czozOiJ1cmwiO3M6MjE6Imh0dHA6Ly8xMjcuMC4wLjE6ODAwMCI7fX0=', 1756968952);
+('T7g5kSxVvlHRaWRShIbuVPqmRbJ46R1YDWAmVfM3', NULL, '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/139.0.0.0 Safari/537.36', 'YTozOntzOjY6Il90b2tlbiI7czo0MDoiTWs0d2FvU2RCQ2pvYVUwTkswOE1zSEVkczJRZVpYcHFVZ3lETjRpRSI7czo2OiJfZmxhc2giO2E6Mjp7czozOiJuZXciO2E6MDp7fXM6Mzoib2xkIjthOjA6e319czo5OiJfcHJldmlvdXMiO2E6MTp7czozOiJ1cmwiO3M6MjE6Imh0dHA6Ly8xMjcuMC4wLjE6ODAwMCI7fX0=', 1756968952),
+('xRkFGm26S9OAx8angwesHbckHKNq2dKPZmoRqlNP', 2, '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/139.0.0.0 Safari/537.36', 'YTo0OntzOjY6Il90b2tlbiI7czo0MDoiWDJURXpaemV0b01XODlrTVdrVTBxRUxlaGJGcTZvbzhhN2tvdEVrMiI7czo2OiJfZmxhc2giO2E6Mjp7czozOiJuZXciO2E6MDp7fXM6Mzoib2xkIjthOjA6e319czo5OiJfcHJldmlvdXMiO2E6MTp7czozOiJ1cmwiO3M6MzU6Imh0dHA6Ly8xMjcuMC4wLjE6ODAwMC9hZG1pbi9sYXBvcmFuIjt9czo1MDoibG9naW5fd2ViXzU5YmEzNmFkZGMyYjJmOTQwMTU4MGYwMTRjN2Y1OGVhNGUzMDk4OWQiO2k6Mjt9', 1757097520);
 
 -- --------------------------------------------------------
 
@@ -1738,8 +1738,9 @@ CREATE TABLE `siswa_absensis` (
   `tanggal` date NOT NULL,
   `jam_masuk` time DEFAULT NULL,
   `jam_pulang` time DEFAULT NULL,
-  `status_masuk` enum('Hadir') DEFAULT NULL,
-  `status_pulang` enum('Hadir') DEFAULT NULL,
+  `status_masuk` enum('Tepat Waktu','Terlambat','Belum Absen') NOT NULL DEFAULT 'Belum Absen',
+  `status_pulang` enum('Hadir Lengkap','Pulang Cepat','Belum Pulang') NOT NULL DEFAULT 'Belum Pulang',
+  `status_keseluruhan` enum('Alpha','Belum Lengkap','Hadir Lengkap') NOT NULL DEFAULT 'Alpha',
   `keterangan` text DEFAULT NULL,
   `dibuat_oleh` bigint(20) UNSIGNED DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
@@ -1754,8 +1755,9 @@ CREATE TABLE `siswa_absensis` (
 -- Dumping data for table `siswa_absensis`
 --
 
-INSERT INTO `siswa_absensis` (`id`, `user_id`, `tanggal`, `jam_masuk`, `jam_pulang`, `status_masuk`, `status_pulang`, `keterangan`, `dibuat_oleh`, `created_at`, `updated_at`, `foto_masuk`, `foto_pulang`, `lokasi_masuk`, `lokasi_pulang`) VALUES
-(4, 7, '2025-07-14', '14:00:37', '14:00:45', 'Hadir', 'Hadir', NULL, 7, '2025-07-14 07:00:37', '2025-07-14 07:00:45', 'storage/absen/6874ab150bc69_masuk.jpg', 'storage/absen/6874ab1d54731_pulang.jpg', '-6.26265470005337,107.17721875974027', '-6.26265470005337,107.17721875974027');
+INSERT INTO `siswa_absensis` (`id`, `user_id`, `tanggal`, `jam_masuk`, `jam_pulang`, `status_masuk`, `status_pulang`, `status_keseluruhan`, `keterangan`, `dibuat_oleh`, `created_at`, `updated_at`, `foto_masuk`, `foto_pulang`, `lokasi_masuk`, `lokasi_pulang`) VALUES
+(4, 7, '2025-07-14', '14:00:37', '14:00:45', '', '', 'Alpha', NULL, 7, '2025-07-14 07:00:37', '2025-07-14 07:00:45', 'storage/absen/6874ab150bc69_masuk.jpg', 'storage/absen/6874ab1d54731_pulang.jpg', '-6.26265470005337,107.17721875974027', '-6.26265470005337,107.17721875974027'),
+(5, 141, '2025-09-06', '01:00:00', '01:01:00', 'Tepat Waktu', 'Pulang Cepat', 'Alpha', NULL, 141, '2025-09-05 18:00:13', '2025-09-05 18:01:08', 'storage/absen/68bb252d6f287_masuk.jpg', 'storage/absen/68bb25643423d_pulang.jpg', '-6.256449903428345,107.18125360015998', '-6.256449903428345,107.18125360015998');
 
 -- --------------------------------------------------------
 
@@ -4320,7 +4322,7 @@ ALTER TABLE `siswas`
 -- AUTO_INCREMENT for table `siswa_absensis`
 --
 ALTER TABLE `siswa_absensis`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT for table `siswa_pindahan`

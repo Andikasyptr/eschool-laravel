@@ -128,9 +128,48 @@
                 <tr class="border-t">
                     <td class="px-4 py-2">{{ $index + 1 }}</td>
                     <td class="px-4 py-2">{{ $absen->tanggal }}</td>
-                    <td class="px-4 py-2">{{ $absen->jam_masuk ?? '-' }}</td>
-                    <td class="px-4 py-2">{{ $absen->jam_pulang ?? '-' }}</td>
-                    <td class="px-4 py-2">{{ $absen->status_masuk ?? '-' }}</td>
+                    <td class="px-4 py-2">
+                        @if($absen->jam_masuk)
+                            {{ $absen->jam_masuk }}
+                            <span class="px-2 py-1 text-xs rounded
+                                @if($absen->status_masuk == 'Tepat Waktu') bg-green-100 text-green-800
+                                @elseif($absen->status_masuk == 'Terlambat') bg-red-100 text-red-800
+                                @else bg-gray-100 text-gray-700 @endif">
+                                {{ $absen->status_masuk }}
+                            </span>
+                        @else
+                            <span class="px-2 py-1 text-xs rounded bg-gray-200 text-gray-700">Alpha</span>
+                        @endif
+                    </td>
+                    <td class="px-4 py-2">
+                        @if($absen->jam_pulang)
+                            {{ $absen->jam_pulang }}
+                            <span class="px-2 py-1 text-xs rounded
+                                @if($absen->status_pulang == 'Hadir Lengkap') bg-green-100 text-green-800
+                                @elseif($absen->status_pulang == 'Pulang Cepat') bg-yellow-100 text-yellow-800
+                                @else bg-gray-100 text-gray-700 @endif">
+                                {{ $absen->status_pulang }}
+                            </span>
+                        @else
+                            @if($absen->jam_masuk)
+                                <span class="px-2 py-1 text-xs rounded bg-gray-200 text-gray-700">Belum Pulang</span>
+                            @else
+                                <span class="px-2 py-1 text-xs rounded bg-gray-200 text-gray-700">-</span>
+                            @endif
+                        @endif
+                    </td>
+                    <td class="px-4 py-2">
+                        @php
+                            if(!$absen->jam_masuk){
+                                $status = 'Alpha'; $color = 'bg-gray-300 text-gray-800';
+                            } elseif($absen->jam_masuk && !$absen->jam_pulang){
+                                $status = 'Belum Lengkap'; $color = 'bg-blue-100 text-blue-800';
+                            } else {
+                                $status = 'Hadir Lengkap'; $color = 'bg-green-100 text-green-800';
+                            }
+                        @endphp
+                        <span class="px-2 py-1 text-xs rounded {{ $color }}">{{ $status }}</span>
+                    </td>
                     <td class="px-4 py-2">
                         @if ($absen->foto_masuk)
                             <a href="{{ asset($absen->foto_masuk) }}" target="_blank" class="text-blue-600 underline">Lihat Foto</a>
@@ -165,7 +204,8 @@
                 @empty
                 <tr><td colspan="9" class="text-center py-2">Belum ada data absensi.</td></tr>
                 @endforelse
-            </tbody>
+                </tbody>
+
         </table>
     </div>
 </div>
@@ -216,7 +256,7 @@
 // === SETTING KOORDINAT DAN RADIUS SEKOLAH ===
 const lokasiSekolah = { lat: -6.262659, lng: 107.177224 };
 // const lokasiSekolah = { lat: -6.2511066, lng: 107.1737123 };
-const radiusMeter = 12; // 50 meter
+const radiusMeter = 80; // 50 meter
 
 let currentForm = null;
 let currentStream = null;
@@ -239,28 +279,38 @@ function hitungJarakMeter(lat1, lng1, lat2, lng2) {
     return R * c; // hasil dalam meter
 }
 
-// Fungsi utama saat klik Absen
-async function isiFormAbsensi(formId) {
-    currentForm = document.getElementById(formId);
-    document.getElementById('loadingOverlay').classList.remove('hidden');
+        // Fungsi utama saat klik Absen
+        async function isiFormAbsensi(formId) {
+            currentForm = document.getElementById(formId);
+            document.getElementById('loadingOverlay').classList.remove('hidden');
 
-    if (!navigator.geolocation) {
-        alert("Geolocation tidak didukung di browser ini.");
-        document.getElementById('loadingOverlay').classList.add('hidden');
-        return;
-    }
-
-    navigator.geolocation.getCurrentPosition(
-        async function(position) {
-            const lat = position.coords.latitude;
-            const lng = position.coords.longitude;
-            const jarak = hitungJarakMeter(lat, lng, lokasiSekolah.lat, lokasiSekolah.lng);
-
-            if (jarak > radiusMeter) {
-                alert(`❌ Anda berada di luar jangkauan lokasi (${jarak.toFixed(1)} meter). Batas maksimal adalah ${radiusMeter} meter. Tidak bisa melakukan absensi.`);
+            if (!navigator.geolocation) {
+                alert("Geolocation tidak didukung di browser ini.");
                 document.getElementById('loadingOverlay').classList.add('hidden');
                 return;
             }
+
+            navigator.geolocation.getCurrentPosition(
+                async function(position) {
+                    const lat = position.coords.latitude;
+                    const lng = position.coords.longitude;
+                    const jarak = hitungJarakMeter(lat, lng, lokasiSekolah.lat, lokasiSekolah.lng);
+
+                    if (jarak > radiusMeter) {
+            // Hentikan absensi
+            document.getElementById('loadingOverlay').classList.add('hidden');
+
+            // Notifikasi menggunakan switch alert
+            Swal.fire({
+                icon: 'error',
+                title: 'Di luar jangkauan!',
+                text: `Anda berada ${jarak.toFixed(1)} meter dari lokasi sekolah. Maksimal ${radiusMeter} meter.`,
+                confirmButtonText: 'OK'
+            });
+
+            return;
+        }
+
 
             const lokasi = `${lat},${lng}`;
             currentForm.querySelector('[name=lokasi]').value = lokasi;

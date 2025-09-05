@@ -20,6 +20,7 @@ class SiswaAbsensiController extends Controller
             ->where('tanggal', $today)
             ->first();
 
+        // Ambil 10 riwayat terakhir
         $riwayat = SiswaAbsensi::where('user_id', $user->id)
             ->orderBy('tanggal', 'desc')
             ->take(10)
@@ -37,6 +38,10 @@ class SiswaAbsensiController extends Controller
             return back()->with('info', 'Anda sudah absen masuk hari ini.');
         }
 
+        // Status masuk
+        $jamSekarang = now()->format('H:i');
+        $statusMasuk = ($jamSekarang <= '07:00') ? 'Tepat Waktu' : 'Terlambat';
+
         // Simpan foto jika ada
         $fotoPath = null;
         if ($request->foto) {
@@ -47,16 +52,17 @@ class SiswaAbsensiController extends Controller
         }
 
         SiswaAbsensi::create([
-            'user_id'       => $user->id,
-            'tanggal'       => $today,
-            'jam_masuk'     => now()->toTimeString(),
-            'status_masuk'  => 'Hadir',
-            'lokasi_masuk'  => $request->lokasi ?? null,
-            'foto_masuk'    => $fotoPath,
-            'dibuat_oleh'   => $user->id,
+            'user_id'           => $user->id,
+            'tanggal'           => $today,
+            'jam_masuk'         => $jamSekarang,
+            'status_masuk'      => $statusMasuk,
+            'lokasi_masuk'      => $request->lokasi ?? null,
+            'foto_masuk'        => $fotoPath,
+            'dibuat_oleh'       => $user->id,
+            'status_kehadiran'  => 'Belum Lengkap', // default sebelum pulang
         ]);
 
-        return back()->with('success', 'Berhasil absen masuk.');
+        return back()->with('success', 'Berhasil absen masuk. Status: ' . $statusMasuk);
     }
 
     public function absenPulang(Request $request)
@@ -74,6 +80,10 @@ class SiswaAbsensiController extends Controller
             return back()->with('info', 'Sudah absen pulang.');
         }
 
+        // Status pulang
+        $jamSekarang = now()->format('H:i');
+        $statusPulang = ($jamSekarang < '14:30') ? 'Pulang Cepat' : 'Hadir Lengkap';
+
         // Simpan foto jika ada
         $fotoPath = null;
         if ($request->foto) {
@@ -84,12 +94,29 @@ class SiswaAbsensiController extends Controller
         }
 
         $absensi->update([
-            'jam_pulang'    => now()->toTimeString(),
-            'status_pulang' => 'Hadir',
-            'lokasi_pulang' => $request->lokasi ?? null,
-            'foto_pulang'   => $fotoPath,
+            'jam_pulang'        => $jamSekarang,
+            'status_pulang'     => $statusPulang,
+            'lokasi_pulang'     => $request->lokasi ?? null,
+            'foto_pulang'       => $fotoPath,
+            'status_kehadiran'  => $statusPulang === 'Hadir Lengkap' ? 'Hadir Lengkap' : 'Belum Lengkap',
         ]);
 
-        return back()->with('success', 'Berhasil absen pulang.');
+        return back()->with('success', 'Berhasil absen pulang. Status: ' . $statusPulang);
+    }
+
+    /**
+     * Update status alpha bagi siswa yang tidak absen sampai esok hari
+     */
+    public function updateAlpha()
+    {
+        $yesterday = Carbon::yesterday()->toDateString();
+
+        $absen = SiswaAbsensi::where('tanggal', $yesterday)
+            ->whereNull('jam_masuk')
+            ->get();
+
+        foreach ($absen as $a) {
+            $a->update(['status_kehadiran' => 'Alpha']);
+        }
     }
 }

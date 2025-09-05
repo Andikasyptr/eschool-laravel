@@ -9,7 +9,7 @@
     <a href="{{ route('admin.absensi.laporan') }}" class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition">Lihat Laporan</a>
 </div>
 
-    @include('admin.absensi._table', ['absensis' => $absensis])
+    @include('admin.absensi.guru_table', ['absensis' => $absensis])
 </div>
 @endsection
 

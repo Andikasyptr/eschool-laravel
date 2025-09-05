@@ -243,7 +243,7 @@
 // === SETTING KOORDINAT DAN RADIUS SEKOLAH ===
 const lokasiSekolah = { lat: -6.262659, lng: 107.177224 };
 // const lokasiSekolah = { lat: -6.2511066, lng: 107.1737123 };
-const radiusMeter = 10000; // 50 meter
+const radiusMeter = 80; // 50 meter
 
 let currentForm = null;
 let currentStream = null;
@@ -283,11 +283,21 @@ async function isiFormAbsensi(formId) {
             const lng = position.coords.longitude;
             const jarak = hitungJarakMeter(lat, lng, lokasiSekolah.lat, lokasiSekolah.lng);
 
-            if (jarak > radiusMeter) {
-                alert(`❌ Anda berada di luar jangkauan lokasi (${jarak.toFixed(1)} meter). Batas maksimal adalah ${radiusMeter} meter. Tidak bisa melakukan absensi.`);
-                document.getElementById('loadingOverlay').classList.add('hidden');
-                return;
-            }
+           if (jarak > radiusMeter) {
+            // Hentikan absensi
+            document.getElementById('loadingOverlay').classList.add('hidden');
+
+            // Notifikasi menggunakan switch alert
+            Swal.fire({
+                icon: 'error',
+                title: 'Di luar jangkauan!',
+                text: `Anda berada ${jarak.toFixed(1)} meter dari lokasi sekolah. Maksimal ${radiusMeter} meter.`,
+                confirmButtonText: 'OK'
+            });
+
+            return;
+        }
+
 
             const lokasi = `${lat},${lng}`;
             currentForm.querySelector('[name=lokasi]').value = lokasi;
